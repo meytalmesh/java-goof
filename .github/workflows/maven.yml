@@ -21,6 +21,17 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+        
+
+    - name: Setup Maven
+  # You may pin to the exact commit or the version.
+  # uses: stCarolas/setup-maven@3c9ddfb1c6df927e174580018dd71e774bc7dd48
+      uses: stCarolas/setup-maven@v4.1
+      with:
+    # Version Spec of the version to use.  Examples: 10.x, 10.15.1, >=10.15.0
+       maven-version: 3.5.4
+    
+    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
