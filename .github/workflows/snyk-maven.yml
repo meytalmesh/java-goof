@@ -30,4 +30,5 @@ jobs:
         node-version: '14'
     - run: npm install snyk -g
     - run: snyk -v
+    - run: snyk auth $snyk_token
     - run: snyk test
