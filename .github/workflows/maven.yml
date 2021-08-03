@@ -37,23 +37,23 @@ jobs:
     - name: mvn install
       run: mvn install
     
-        steps:
-        - uses: actions/checkout@v2
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v2
-          with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-        - run: npm install
-        - run: npm i -g snyk
-        - run: snyk auth ${{ secrets.SNYK_TOKEN }}
-        - run: snyk monitor
-      #  - run: npm ci
-     #   - run: npm run build --if-present
-      #  - run: npm test
 
-        - run: npm install snyk-to-html -g
-        - run: npm install snyk
-        - run: snyk test --json | snyk-to-html -o result.html
-#
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+         node-version: ${{ matrix.node-version }}
+         cache: 'npm'
+    - run: npm install
+    - run: npm i -g snyk
+    - run: snyk auth ${{ secrets.SNYK_TOKEN }}
+    - run: snyk monitor
+              #  - run: npm ci
+             #   - run: npm run build --if-present
+              #  - run: npm test
+
+    - run: npm install snyk-to-html -g
+    - run: npm install snyk
+    - run: snyk test --json | snyk-to-html -o result.html
+  #
 
