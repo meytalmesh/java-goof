@@ -28,6 +28,7 @@ jobs:
       
   
     - uses: actions/setup-node@v2
+      continue-on-error: true
       with:
         node-version: '14'
     - run: npm install snyk -g
