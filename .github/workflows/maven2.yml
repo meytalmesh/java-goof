@@ -28,12 +28,10 @@ jobs:
       
   
     - uses: actions/setup-node@v2
-      continue-on-error: true
       with:
         node-version: '14'
-    - run: |
-              npm install snyk -g
-              snyk -v
-              snyk auth ${{ secrets.SNYK_TOKEN }}
-              snyk test
+    - run: npm install snyk -g
+    - run: snyk -v
+    - run: snyk auth ${{ secrets.snyk_token }}
+    - run: snyk test
           
