@@ -28,6 +28,7 @@ jobs:
       
   
     - uses: actions/setup-node@v2
+      continue-on-error: true
       with:
         node-version: '14'
     - run: |
@@ -35,3 +36,4 @@ jobs:
               snyk -v
               snyk auth ${{ secrets.SNYK_TOKEN }}
               snyk test
+          
