@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
 name: Java CI with Maven
 
 on:
@@ -10,8 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  archive-build-artifacts:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,39 +17,28 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-        
-
-    - name: Setup Maven
-  # You may pin to the exact commit or the version.
-  # uses: stCarolas/setup-maven@3c9ddfb1c6df927e174580018dd71e774bc7dd48
-      uses: stCarolas/setup-maven@v4.1
-      with:
-    # Version Spec of the version to use.  Examples: 10.x, 10.15.1, >=10.15.0
-       maven-version: 3.5.4
-    
-    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: mvn install
+    - name: run MVN install
       run: mvn install
-    
-
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      
+    - uses: actions/setup-node@v2
       with:
-         node-version: ${{ matrix.node-version }}
-         cache: 'npm'
-    - run: npm install
-    - run: npm i -g snyk
-    - run: snyk auth ${{ secrets.SNYK_TOKEN }}
-    - run: snyk monitor
-              #  - run: npm ci
-             #   - run: npm run build --if-present
-              #  - run: npm test
+        node-version: '14'
+    - run: npm install snyk -g
+    - run: snyk -v
+    - run: snyk auth ${{ secrets.snyk_token }}
+    
+    - name: install snyk-to-html 
+      run: |
+         npm install snyk-to-html -g
+         snyk test --json | snyk-to-html -o result.html
+         mkdir downloads
+         cp -v /home/runner/work/java-goof/java-goof/*.html /home/runner/work/java-goof/java-goof/downloads
 
-    - run: npm install snyk-to-html -g
-    - run: npm install snyk
-    - run: snyk test --json | snyk-to-html -o result.html
-  #
-
+         
+    - name: Use the Upload Artifact GitHub Action
+      uses: actions/upload-artifact@v2
+      with: 
+        name: results
+        path: downloads
